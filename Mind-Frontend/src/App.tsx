@@ -1,21 +1,30 @@
-  import { Button } from './Componet/UI/Button'
-import { Card } from './Componet/UI/Card'
-import { Addicon } from './icon/addIcon'
-  import { Shareicon } from './icon/shareicon'
+import { Dashboard } from './Dashboard';
+import { SignIn } from './signin';
+import { SignUp } from './signup';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { ProtectedRoute } from './ProctectedRoutes'; 
+import { PublicBrainView } from './Componet/UI/PublicView';
 
-
-  function App() {
-
-
+function App() {
     return (
-      <div className='bg-red-300'>
-      <Button variant='primary' size='md' text="Click me" startIcon={<Shareicon/>} />
-      <Button variant='secondary' size='md' text="Cancel" startIcon={<Addicon/>}/>
-      <Card title='random' link='https://x.com/shantanukmr/status/1931271292801401123' type='twitter'/>
-       <Card title='random' link='https://www.youtube.com/embed/3Cp2QTBZAFQ?si=1HKN7MZi1zOpfgD0' type='youtube'/>
-      
-      </div>
-    )
-  }
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<Navigate to="/signin" replace />} />
+                <Route 
+                    path='/dashboard' 
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard/>
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route path='/signin' element={<SignIn/>} />
+                <Route path='/signup' element={<SignUp/>} />
+                <Route path='/brain/:shareLink' element={<PublicBrainView/>} />
+                <Route path='*' element={<Navigate to="/signin" replace />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
 
-  export default App
+export default App;
